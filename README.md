@@ -64,6 +64,8 @@ and/or
 
 ```bash
 GraphAligner --global-alignment -x vg -f reads.fq -g graph.gfa -a longreads_aligned_on_gfa.gaf
+# or with recent release of GraphAligner:
+#GraphAligner --multimap-score-fraction 1 -x vg -f reads.fq -g graph.gfa -a longreads_aligned_on_gfa.gaf
 ``` 
 and/or
 
@@ -212,14 +214,16 @@ If not already done, download GraphUnzip:
 `git clone https://github.com/nadegeguiglielmoni/GraphUnzip.git`
 
 Install [SPAdes](github.com/ablab/spades) to have both a short read assembler and an aligner (SPAligner). You can use another assembler if you prefer, but the installation of SPAdes is still recommended to have access to SPAligner. On Linux, the commands are:
-```
+
+```bash
 wget http://cab.spbu.ru/files/release3.15.3/SPAdes-3.15.3-Linux.tar.gz
 tar -xzf SPAdes-3.15.3-Linux.tar.gz
 ```
 ### Short read assembly
  
 Run the short read assembler. If you are using SPAdes,
-```
+
+```bash
 SPAdes-3.15.3-Linux/bin/spades.py --s short_reads.fastq -o short_read_assembly 
 ```
 This is in case the short reads are unpaired. If using another type of library or if you want to tune other options, please refer to `spades.py --help`.
@@ -227,15 +231,16 @@ This is in case the short reads are unpaired. If using another type of library o
 ### Read alignment
 
 We will use SPAligner to align long reads to the assembly graph. If you want to tune the parameters, refer to the [gitHub of SPAligner](https://github.com/ablab/spades/tree/spades_3.15.3/assembler/src/projects/spaligner).
-```
+
+```bash
 SPAdes-3.15.3-Linux/bin/spaligner SPAdes-3.15.3-Linux/share/spaligner/spaligner_config.yaml -d pacbio -g short_read_assembly/assembly_graph_with_scaffolds.gfa -k 127 -s long_reads.fastq.gz
 ```
 
 ### Untangling the short-read assembly
 
 Now we use GraphUnzip:
-```
-GraphUnzip/graphunzip -g short_read_assembly/assembly_graph_with_scaffolds.gfa -l spaligner_result/alignment.tsv -o assembly.gfa -f assembly.fasta
+```bash
+graphunzip unzip -g short_read_assembly/assembly_graph_with_scaffolds.gfa -l spaligner_result/alignment.tsv -o assembly.gfa -f assembly.fasta
 ```
 
 The final assembly are assembly.gfa (GFA format) and assembly.fasta (FASTA format)
