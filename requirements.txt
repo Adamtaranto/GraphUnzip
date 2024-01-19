@@ -1,7 +1,6 @@
-numpy
-scipy
-pysam
-setuptools_scm
-matplotlib
-pandas
 biopython
+matplotlib
+numpy
+pandas
+pysam
+scipy
